@@ -11,6 +11,8 @@ app_name = 'app'
 urlpatterns = [
     # ex: /app/
     path('', views.IndexView.as_view(), name='index'),
+    # ex: /app/questions
+    path('questions/', views.QuestionsView.as_view(), name='questions'),
     # ex: /app/<id>/
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     # ex: /app/<id>/results/

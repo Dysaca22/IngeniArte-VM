@@ -18,6 +18,15 @@ class IndexView(generic.ListView):
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
 
+""" Questions view """
+class QuestionsView(generic.ListView):
+    template_name = 'app/questions.html'
+    context_object_name = 'latest_question_list'    
+    def get_queryset(self):
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')
+
 """ Detail view """
 class DetailView(generic.DetailView):
     model = Question

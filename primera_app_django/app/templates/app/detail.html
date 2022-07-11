@@ -10,8 +10,8 @@
     -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title> IngeniArte </title>
-    <meta name="description" content="IngeniArte">
+    <title> {{ question.question_text }} </title>
+    <meta name="description" content="Roxy">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- External CSS -->
@@ -34,7 +34,36 @@
 
 </head>
 <body data-spy="scroll" data-target="#navbar" class="static-layout">
-	<nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+	<div id="side-nav" class="sidenav">
+	<a href="javascript:void(0)" id="side-nav-close">&times;</a>
+	
+	<div class="sidenav-content">
+		<p>
+			Info 1
+		</p>
+		<p>
+			<span class="fs-16 primary-color"> Info 2 </span>
+		</p>
+		<p> Info 3 </p>
+	</div>
+</div>	<div id="side-search" class="sidenav">
+	<a href="javascript:void(0)" id="side-search-close">&times;</a>
+	<div class="sidenav-content">
+		<form action="">
+
+			<div class="input-group md-form form-sm form-2 pl-0">
+			  <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search">
+			  <div class="input-group-append">
+			    <button class="input-group-text red lighten-3" id="basic-text1">
+			    	<span class="lnr lnr-magnifier"></span>
+			    </button>
+			  </div>
+			</div>
+
+		</form>
+	</div>
+	
+</div>	<nav id="header-navbar" class="navbar navbar-expand-lg py-4">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center text-white" href="/app">
             <h3 class="font-weight-bolder mb-0"> IngeniArte </h3>
@@ -70,112 +99,58 @@
         </div>
     </div>
 </nav>
-
-<div id="side-nav" class="sidenav">
-	<a href="javascript:void(0)" id="side-nav-close">&times;</a>
 	
-	<div class="sidenav-content">
-		<p>
-			Info 1
-		</p>
-		<p>
-			<span class="fs-16 primary-color"> Info 2 </span>
-		</p>
-		<p> Info 3 </p>
-	</div>
-</div><div id="side-search" class="sidenav">
-	<a href="javascript:void(0)" id="side-search-close">&times;</a>
-	<div class="sidenav-content">
-		<form action="">
+</div>	
 
-			<div class="input-group md-form form-sm form-2 pl-0">
-			  <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search">
-			  <div class="input-group-append">
-			    <button class="input-group-text red lighten-3" id="basic-text1">
-			    	<span class="lnr lnr-magnifier"></span>
-			    </button>
-			  </div>
-			</div>
-
-		</form>
-	</div>
-	
-</div>	<div class="jumbotron d-flex align-items-center">
+<div class="jumbotron jumbotron-single d-flex align-items-center" style="background-image: url(../../static/app/img/bg.jpg)">
   <div class="container text-center">
-    <h1 class="display-1 mb-4">Ingeni<br>Arte</h1>
+    <h1 class="display-2 mb-4"> Choices: {{ question.question_text }} </h1>
   </div>
-  <div class="rectangle-1"></div>
-  <div class="rectangle-2"></div>
-  <div class="rectangle-transparent-1"></div>
-  <div class="rectangle-transparent-2"></div>
-  <div class="circle-1"></div>
-  <div class="circle-2"></div>
-  <div class="circle-3"></div>
-  <div class="triangle triangle-1">
-  	<img src="{% static 'app/img/obj_triangle.png' %}" alt="">
-  </div>
-  <div class="triangle triangle-2">
-  	<img src="{% static 'app/img/obj_triangle.png' %}" alt="">
-  </div>
-  <div class="triangle triangle-3">
-  	<img src="{% static 'app/img/obj_triangle.png' %}" alt="">
-  </div>
-  <div class="triangle triangle-4">
-  	<img src="{% static 'app/img/obj_triangle.png' %}" alt="">
-  </div>
-</div>	<!-- Features Section-->
-<section id="features" class="bg-white">
+</div>	<!-- Blog Section -->
+<section id="blog" class="bg-grey">
     <div class="container">
         <div class="section-content">
-            <!-- Section Title -->
             <div class="title-wrap mb-5" data-aos="fade-up">
-                <h2 class="section-title">
-                    Questions
-                </h2>
-                <p class="section-sub-title"> Select your question </p>
+                <h2 class="section-title"> Choices of <b>{{ question.question_text }}</b> </h2>
+                <p class="section-sub-title"> Select your answer </p>
             </div>
-            <!-- End of Section Title -->
             <div class="row">
-                <!-- Features Holder-->
-                <div class="col-md-10 offset-md-1 features-holder">
-                    <div class="row">
-                        <!-- Features Item -->
-                        {% if latest_question_list %}
-                            {% for q in latest_question_list %}
-                                {% if forloop.counter < 3 %}
-                                    <div class="col-md-4 col-sm-12 text-center mt-4">
-                                        <div class="shadow rounded feature-item p-4 mb-4" data-aos="fade-up">
-                                            <div class="my-4">
-                                                <i class="lnr lnr-bubble fs-40"></i>
-                                            </div>
-                                            {% if q %}
-                                                <h4>Question # {{ forloop.counter }}</h4>
-                                                <a href="{% url 'app:detail' q.id %}"> {{ q.question_text }} </a>
-                                            {% else %}
-                                                <h4> No question </h4>
-                                            {% endif %}
+                <!-- Blog -->
+                <div class="col-md-12 blog-holder">
+                        <!-- Blog Item -->
+                        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+                        <form action="{% url 'app:vote' question.id %}" method="post" class="row">
+                            {% csrf_token %}
+                            {% for choice in question.choice_set.all %}
+                            <div class="col-md-4 blog-item-wrapper" data-aos="fade-up">
+                                <input class="blog-item" type="submit" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                                    <div class="blog-text">
+                                        <div class="blog-tag">
+                                            <h6><small> Choice {{ forloop.counter }} </small></h6>
+                                        </div>
+                                        <div class="blog-title">
+                                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                                         </div>
                                     </div>
-                                {% endif %}
+                                </input>
+                            </div>
                             {% endfor %}
-                        {% else %}
-                            <p> No questions are available </p>
-                        {% endif %}
-                        <!-- End of Feature Item -->
-                    </div>
+                        </form>
+                        <!-- End of Blog Item -->
                 </div>
-                <!-- End of Features Holder-->
+                <!-- End of Blog -->
             </div>
         </div>
     </div>
 </section>
-<!-- End of Features Section-->	
+<!-- End of Blog Section -->
 
 <!-- External JS -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 	<script src="{% static 'app/vendor/bootstrap/popper.min.js' %}"></script>
 	<script src="{% static 'app/vendor/bootstrap/bootstrap.min.js' %}"></script>
-	<script src="{% static 'app/vendor/select2/select2.min.js' %} "></script>
+	<script src="{% static 'app/vendor/select2/select2.min.js' %}"></script>
 	<script src="{% static 'app/vendor/owlcarousel/owl.carousel.min.js' %}"></script>
 	<script src="{% static 'app/vendor/stellar/jquery.stellar.js' %}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'app/vendor/isotope/isotope.min.js' %}"></script>
